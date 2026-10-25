@@ -1,0 +1,18 @@
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: indexer_postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME:?Ustaw DB_NAME w pliku .env}
+      POSTGRES_USER: ${DB_USER:?Ustaw DB_USER w pliku .env}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Ustaw DB_PASSWORD w pliku .env}
+    ports:
+      - "${DB_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+volumes:
+  pgdata:
